@@ -1,0 +1,1 @@
+./configure --prefix=/home/khl7265/Desktop/ior/run CFLAGS="-I/home/khl7265/local/ncmpi_eval/include -L/home/khl7265/local/ncmpi_eval/lib" LDFLAGS="-lpnetcdf" --with-ncmpi --with-mpiio --with-posix

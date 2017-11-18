@@ -269,7 +269,7 @@ static IOR_offset_t NCMPI_Xfer(int access, void *fd, IOR_size_t * buffer,
         bufSize[1] = 1;
         bufSize[2] = param->transferSize;
 
-        offset[0] = segmentNum * numTasksWorld + rank;
+        offset[0] = segmentNum * param->numTasks + rank;
         offset[1] = transferNum;
         offset[2] = 0;
 
@@ -278,24 +278,24 @@ static IOR_offset_t NCMPI_Xfer(int access, void *fd, IOR_size_t * buffer,
                 if (param->collective) {
                         NCMPI_CHECK(ncmpi_put_vara_all
                                     (*(int *)fd, var_id, offset, bufSize,
-                                     bufferPtr, length, MPI_BYTE),
+                                     bufferPtr, length, MPI_SIGNED_CHAR),
                                     "cannot write to data set");
                 } else {
                         NCMPI_CHECK(ncmpi_put_vara
                                     (*(int *)fd, var_id, offset, bufSize,
-                                     bufferPtr, length, MPI_BYTE),
+                                     bufferPtr, length, MPI_SIGNED_CHAR),
                                     "cannot write to data set");
                 }
         } else {                /* READ or CHECK */
                 if (param->collective == TRUE) {
                         NCMPI_CHECK(ncmpi_get_vara_all
                                     (*(int *)fd, var_id, offset, bufSize,
-                                     bufferPtr, length, MPI_BYTE),
+                                     bufferPtr, length, MPI_SIGNED_CHAR),
                                     "cannot read from data set");
                 } else {
                         NCMPI_CHECK(ncmpi_get_vara
                                     (*(int *)fd, var_id, offset, bufSize,
-                                     bufferPtr, length, MPI_BYTE),
+                                     bufferPtr, length, MPI_SIGNED_CHAR),
                                     "cannot read from data set");
                 }
         }
