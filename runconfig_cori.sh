@@ -1,1 +1,1 @@
-./configure --prefix=/global/homes/k/khl7265/Desktop/ior/run CFLAGS="-I/global/homes/k/khl7265/local/ncmpi_eval/include -L/global/homes/k/khl7265/local/ncmpi_eval/lib" LDFLAGS="-lpnetcdf" --with-ncmpi --with-mpiio --with-posix
+./configure --prefix=/global/homes/k/khl7265/Desktop/ior/run CFLAGS="-I/global/homes/k/khl7265/local/ncmpi_eval/include -L/global/homes/k/khl7265/local/ncmpi_eval/lib" LDFLAGS="-lpnetcdf" --with-ncmpi --with-mpiio --with-posix CC=cc MPICC=cc --with-lustre --with-gpfs=no
