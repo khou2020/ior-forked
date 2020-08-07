@@ -627,7 +627,7 @@ void ShowFileSystemSize(char *fileSystem) // this might be converted to an AIORI
         }
 
         if(outputFormat == OUTPUT_DEFAULT){
-          fprintf(out_resultfile, "%-20s: %s\n", "Path", realPath);
+          fprintf(out_resultfile, "#%%$: IOR_%-20s: %s\n", "Path", realPath);
           fprintf(out_resultfile, "%-20s: %.1f %s   Used FS: %2.1f%%   ",
                   "FS", totalFileSystemSizeHR, fileSystemUnitStr,
                   usedFileSystemPercentage);

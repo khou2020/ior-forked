@@ -40,7 +40,7 @@ static void PrintKeyValStart(char * key){
   PrintNextToken();
   if (outputFormat == OUTPUT_DEFAULT){
     PrintIndent();
-    fprintf(out_resultfile, "%-20s: ", key);
+    fprintf(out_resultfile, "#%%$: %-20s: ", key);
     return;
   }
   if(outputFormat == OUTPUT_JSON){
@@ -78,7 +78,7 @@ static void PrintKeyVal(char * key, char * value){
   PrintNextToken();
   needNextToken = 1;
   if (outputFormat == OUTPUT_DEFAULT){
-    fprintf(out_resultfile, "%-20s: %s\n", key, value);
+    fprintf(out_resultfile, "#%%$: %-20s: %s\n", key, value);
     return;
   }
   if(outputFormat == OUTPUT_JSON){
@@ -92,7 +92,7 @@ static void PrintKeyValDouble(char * key, double value){
   PrintNextToken();
   needNextToken = 1;
   if (outputFormat == OUTPUT_DEFAULT){
-    fprintf(out_resultfile, "%-20s: %.4f\n", key, value);
+    fprintf(out_resultfile, "#%%$: %-20s: %.4f\n", key, value);
     return;
   }
   if(outputFormat == OUTPUT_JSON){
@@ -107,7 +107,7 @@ static void PrintKeyValInt(char * key, int64_t value){
   PrintNextToken();
   needNextToken = 1;
   if (outputFormat == OUTPUT_DEFAULT){
-    fprintf(out_resultfile, "%-20s: %lld\n", key, (long long) value);
+    fprintf(out_resultfile, "#%%$: %-20s: %lld\n", key, (long long) value);
     return;
   }
   if(outputFormat == OUTPUT_JSON){
@@ -533,10 +533,18 @@ static void PrintLongSummaryOneOperation(IOR_test_t *test, const int access)
         IOR_results_t *results = test->results;
         struct results *bw;
         struct results *ops;
+        const char *prefix;
 
         int reps;
         if (rank != 0 || verbose < VERBOSE_0)
                 return;
+
+        if(access == WRITE){
+          prefix = "#%$: IOR_Wr_";
+        } 
+        else{
+          prefix = "#%$: IOR_Rd_";
+        }
 
         reps = params->repetitions;
 
@@ -591,6 +599,39 @@ static void PrintLongSummaryOneOperation(IOR_test_t *test, const int access)
           fprintf(out_resultfile, "%9.1f ", (float)point->aggFileSizeForBW / MEBIBYTE);
           fprintf(out_resultfile, "%3s ", params->api);
           fprintf(out_resultfile, "%6d", params->referenceNumber);
+          fprintf(out_resultfile, "\n");
+
+          fprintf(out_resultfile, "%sbw_max: %10.2f \n", prefix, bw->max / MEBIBYTE);
+          fprintf(out_resultfile, "%sbw_min: %10.2f \n", prefix, bw->min / MEBIBYTE);
+          fprintf(out_resultfile, "%sbw_avg: %10.2f \n\n", prefix, bw->mean / MEBIBYTE);
+          fprintf(out_resultfile, "%sbw_stddev: %10.2f \n\n", prefix, bw->sd / MEBIBYTE);
+          fprintf(out_resultfile, "%sops_max: %10.2f \n\n", prefix, ops->max);
+          fprintf(out_resultfile, "%sops_min: %10.2f \n", prefix, ops->min);
+          fprintf(out_resultfile, "%sops_avg: %10.2f \n", prefix, ops->mean);
+          fprintf(out_resultfile, "%sops_stddev: %10.2f \n", prefix, ops->sd);
+          fprintf(out_resultfile, "%stime_avg: %10.5f \n", prefix, mean_of_array_of_doubles(times, reps));
+          if(test->params.stoneWallingWearOut){
+            fprintf(out_resultfile, "%ssw_time: %10.2f \n", prefix, stonewall_time / reps);
+            fprintf(out_resultfile, "%ssw_size: %13.2f \n", prefix, stonewall_avg_data_accessed / stonewall_time / MEBIBYTE);
+          }else{
+            fprintf(out_resultfile, "%ssw_time: %10s \n", prefix, "NA");
+            fprintf(out_resultfile, "%ssw_size: %13s \n", prefix, "NA");
+          }
+          fprintf(out_resultfile, "%stid: %5d \n", prefix, params->id);
+          fprintf(out_resultfile, "%snp: %6d \n", prefix, params->numTasks);
+          fprintf(out_resultfile, "%sppn: %3d \n", prefix, params->numTasksOnNode0);
+          fprintf(out_resultfile, "%sitrs: %4d \n", prefix, params->repetitions);
+          fprintf(out_resultfile, "%sfpp: %3d \n", prefix, params->filePerProc);
+          fprintf(out_resultfile, "%sreord: %5d \n", prefix, params->reorderTasks);
+          fprintf(out_resultfile, "%sreord_off: %8d \n", prefix, params->taskPerNodeOffset);
+          fprintf(out_resultfile, "%sreord_rand: %9d \n", prefix, params->reorderTasksRandom);
+          fprintf(out_resultfile, "%sreord_seed: %4d \n", prefix, params->reorderTasksRandomSeed);
+          fprintf(out_resultfile, "%snseg: %6lld \n", prefix, params->segmentCount);
+          fprintf(out_resultfile, "%sbsize: %8lld \n", prefix, params->blockSize);
+          fprintf(out_resultfile, "%sxsize: %8lld \n", prefix, params->transferSize);
+          fprintf(out_resultfile, "%swsize: %9.1f \n", prefix, (float)point->aggFileSizeForBW / MEBIBYTE);
+          fprintf(out_resultfile, "%sapi: %3s \n", prefix, params->api);
+          fprintf(out_resultfile, "%sref: %6d\n", prefix, params->referenceNumber);
           fprintf(out_resultfile, "\n");
         }else if (outputFormat == OUTPUT_JSON){
           PrintStartSection();
