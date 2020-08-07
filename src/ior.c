@@ -184,6 +184,7 @@ int ior_main(int argc, char **argv)
 {
     IOR_test_t *tests_head;
     IOR_test_t *tptr;
+	int mpi_inited;
 
     out_logfile = stdout;
     out_resultfile = stdout;
@@ -194,7 +195,11 @@ int ior_main(int argc, char **argv)
     tests_head = ParseCommandLine(argc, argv, MPI_COMM_WORLD);
 
     /* start the MPI code */
-    MPI_CHECK(MPI_Init(&argc, &argv), "cannot initialize MPI");
+
+    MPI_CHECK(MPI_Initialized (&mpi_inited), "cannot check MPI initialzied");
+	if(!mpi_inited){
+    	MPI_CHECK(MPI_Init(&argc, &argv), "cannot initialize MPI");
+	}
 
     MPI_CHECK(MPI_Comm_rank(MPI_COMM_WORLD, &rank), "cannot get rank");
 
@@ -233,7 +238,9 @@ int ior_main(int argc, char **argv)
     /* display finish time */
     PrintTestEnds();
 
-    MPI_CHECK(MPI_Finalize(), "cannot finalize MPI");
+	if(!mpi_inited){
+    	MPI_CHECK(MPI_Finalize(), "cannot finalize MPI");
+    }
 
     DestroyTests(tests_head);
 

@@ -42,7 +42,7 @@ static void PrintKeyValStart(char * key){
   PrintNextToken();
   if (outputFormat == OUTPUT_DEFAULT){
     PrintIndent();
-    fprintf(out_resultfile, "#%%$: %-20s: ", key);
+    fprintf(out_resultfile, "#%%$: IOR_%-20s: ", key);
     return;
   }
   if(outputFormat == OUTPUT_JSON){
@@ -78,7 +78,7 @@ static void PrintKeyVal(char * key, char * value){
   PrintNextToken();
   needNextToken = 1;
   if (outputFormat == OUTPUT_DEFAULT){
-    fprintf(out_resultfile, "#%%$: %-20s: %s\n", key, value);
+    fprintf(out_resultfile, "#%%$: IOR_%-20s: %s\n", key, value);
     return;
   }
   if(outputFormat == OUTPUT_JSON){
@@ -92,7 +92,7 @@ static void PrintKeyValDouble(char * key, double value){
   PrintNextToken();
   needNextToken = 1;
   if (outputFormat == OUTPUT_DEFAULT){
-    fprintf(out_resultfile, "#%%$: %-20s: %.4f\n", key, value);
+    fprintf(out_resultfile, "#%%$: IOR_%-20s: %.4f\n", key, value);
     return;
   }
   if(outputFormat == OUTPUT_JSON){
@@ -111,7 +111,7 @@ static void PrintKeyValInt(char * key, int64_t value){
   PrintNextToken();
   needNextToken = 1;
   if (outputFormat == OUTPUT_DEFAULT){
-    fprintf(out_resultfile, "#%%$: %-20s: %lld\n", key, (long long) value);
+    fprintf(out_resultfile, "#%%$: IOR_%-20s: %lld\n", key, (long long) value);
     return;
   }
   if(outputFormat == OUTPUT_JSON){
