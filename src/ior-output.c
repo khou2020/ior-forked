@@ -602,10 +602,10 @@ static void PrintLongSummaryOneOperation(IOR_test_t *test, const int access)
           fprintf(out_resultfile, "%6d", params->referenceNumber);
           fprintf(out_resultfile, "\n");
 
-          fprintf(out_resultfile, "%sbw_max: %10.2f \n", prefix, bw->max / MEBIBYTE);
-          fprintf(out_resultfile, "%sbw_min: %10.2f \n", prefix, bw->min / MEBIBYTE);
-          fprintf(out_resultfile, "%sbw_avg: %10.2f \n\n", prefix, bw->mean / MEBIBYTE);
-          fprintf(out_resultfile, "%sbw_stddev: %10.2f \n\n", prefix, bw->sd / MEBIBYTE);
+          fprintf(out_resultfile, "%sbw_mib_max: %10.2f \n", prefix, bw->max / MEBIBYTE);
+          fprintf(out_resultfile, "%sbw_mib_min: %10.2f \n", prefix, bw->min / MEBIBYTE);
+          fprintf(out_resultfile, "%sbw_mib_avg: %10.2f \n\n", prefix, bw->mean / MEBIBYTE);
+          fprintf(out_resultfile, "%sbw_mib_stddev: %10.2f \n\n", prefix, bw->sd / MEBIBYTE);
           fprintf(out_resultfile, "%sops_max: %10.2f \n\n", prefix, ops->max);
           fprintf(out_resultfile, "%sops_min: %10.2f \n", prefix, ops->min);
           fprintf(out_resultfile, "%sops_avg: %10.2f \n", prefix, ops->mean);
@@ -613,7 +613,7 @@ static void PrintLongSummaryOneOperation(IOR_test_t *test, const int access)
           fprintf(out_resultfile, "%stime_avg: %10.5f \n", prefix, mean_of_array_of_doubles(times, reps));
           if(test->params.stoneWallingWearOut){
             fprintf(out_resultfile, "%ssw_time: %10.2f \n", prefix, stonewall_time / reps);
-            fprintf(out_resultfile, "%ssw_size: %13.2f \n", prefix, stonewall_avg_data_accessed / stonewall_time / MEBIBYTE);
+            fprintf(out_resultfile, "%ssw_size_mib: %13.2f \n", prefix, stonewall_avg_data_accessed / stonewall_time / MEBIBYTE);
           }else{
             fprintf(out_resultfile, "%ssw_time: %10s \n", prefix, "NA");
             fprintf(out_resultfile, "%ssw_size: %13s \n", prefix, "NA");
@@ -630,7 +630,7 @@ static void PrintLongSummaryOneOperation(IOR_test_t *test, const int access)
           fprintf(out_resultfile, "%snseg: %6lld \n", prefix, params->segmentCount);
           fprintf(out_resultfile, "%sbsize: %8lld \n", prefix, params->blockSize);
           fprintf(out_resultfile, "%sxsize: %8lld \n", prefix, params->transferSize);
-          fprintf(out_resultfile, "%swsize: %9.1f \n", prefix, (float)point->aggFileSizeForBW / MEBIBYTE);
+          fprintf(out_resultfile, "%swsize_mib: %9.1f \n", prefix, (float)point->aggFileSizeForBW / MEBIBYTE);
           fprintf(out_resultfile, "%sapi: %3s \n", prefix, params->api);
           fprintf(out_resultfile, "%sref: %6d\n", prefix, params->referenceNumber);
           fprintf(out_resultfile, "\n");
